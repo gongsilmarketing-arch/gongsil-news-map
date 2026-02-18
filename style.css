@@ -329,56 +329,128 @@ body {
         z-index: 50;
     }
 
-    /* 헤더 간소화 */
+    /* 헤더 고정 및 간소화 */
     .header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
         height: 50px;
         padding: 0 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        /* 고정 효과 */
     }
 
     .header-left {
         gap: 10px;
-    }
-
-    .logo {
-        font-size: 18px;
-    }
-
-    /* 중요: 모바일에서 상단 탭 메뉴 숨기거나 스크롤 가능하게 변경 */
-    /* 현재는 공간 부족하므로 주요 탭만 남기거나 가로 스크롤 적용 */
-    .nav {
-        overflow-x: auto;
-        white-space: nowrap;
         flex: 1;
-        /* 남은 공간 모두 차지 */
+        /* 남은 공간 차지 */
+        min-width: 0;
+        /* flex 자식 줄임 허용 */
+    }
+
+    /* 로고 그룹 너비 유동적 조절 */
+    .logo-group {
+        flex-shrink: 0;
+    }
+
+    .logo-img-link img {
+        height: 32px;
+        /* 로고 크기 축소 */
+    }
+
+    .beta-badge {
+        font-size: 10px;
+        margin-left: 4px;
+    }
+
+    /* 검색창 위치 조정 (헤더 아래로) */
+    .search-container {
+        top: 10px;
+        /* 헤더 바로 아래 */
+        left: 50%;
+        transform: translateX(-50%);
+        /* 중앙 정렬 */
+        width: 90%;
+        /* 모바일에서 넓게 */
         max-width: none;
-        /* 너비 제한 해제 */
-        -webkit-overflow-scrolling: touch;
-
-        /* 스크롤바 숨기기 (크롬, 사파리, 엣지 등) */
-        scrollbar-width: none;
-        /* 파이어폭스 */
-        -ms-overflow-style: none;
-        /* IE, 엣지 */
     }
 
-    .nav::-webkit-scrollbar {
-        display: none;
-        /* 크롬, 사파리 */
+    .search-input {
+        width: 100%;
+        font-size: 14px;
+        height: 40px;
+        /* 터치하기 좋게 */
     }
 
-    .nav-tab {
-        margin-right: 15px;
-        font-size: 13px;
-        padding-bottom: 14px;
-        /* 헤더 높이 50px 대응 */
+    /* 오버레이(정보창) 모바일 최적화 */
+    .overlay-wrap {
+        width: 280px;
+        /* 너비 줄임 */
+        padding: 15px;
+        bottom: 60px;
+        /* 마커 위로 좀 더 올림 */
     }
 
-    .header-right {
-        display: none;
-        /* 모바일에서 우측 버튼 숨김 (필요시 햄버거 메뉴) */
+    .overlay-title {
+        font-size: 15px;
+        /* 제목 크기 축소 */
+        margin-bottom: 8px;
     }
 
-    /* ... Mobile Responsive Media Query ... */
+    .overlay-desc {
+        font-size: 12px;
+        -webkit-line-clamp: 2;
+        /* 2줄까지만 표시 */
+        line-clamp: 2;
+    }
+
+    .overlay-meta {
+        font-size: 11px;
+        margin-bottom: 8px;
+    }
+
+    .overlay-link {
+        font-size: 12px;
+        padding: 6px 0;
+    }
+}
+
+/* 중요: 모바일에서 상단 탭 메뉴 숨기거나 스크롤 가능하게 변경 */
+/* 현재는 공간 부족하므로 주요 탭만 남기거나 가로 스크롤 적용 */
+.nav {
+    overflow-x: auto;
+    white-space: nowrap;
+    flex: 1;
+    /* 남은 공간 모두 차지 */
+    max-width: none;
+    /* 너비 제한 해제 */
+    -webkit-overflow-scrolling: touch;
+
+    /* 스크롤바 숨기기 (크롬, 사파리, 엣지 등) */
+    scrollbar-width: none;
+    /* 파이어폭스 */
+    -ms-overflow-style: none;
+    /* IE, 엣지 */
+}
+
+.nav::-webkit-scrollbar {
+    display: none;
+    /* 크롬, 사파리 */
+}
+
+.nav-tab {
+    margin-right: 15px;
+    font-size: 13px;
+    padding-bottom: 14px;
+    /* 헤더 높이 50px 대응 */
+}
+
+.header-right {
+    display: none;
+    /* 모바일에서 우측 버튼 숨김 (필요시 햄버거 메뉴) */
+}
+
+/* ... Mobile Responsive Media Query ... */
 }
 
 /* ---------------------------------------------------- */
