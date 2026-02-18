@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 모바일 맵 최적화: user-scalable=no 추가 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>공실뉴스 지도 (Gongsil News Map)</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* 초기 로딩 스타일 */
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="header-left">
+            <a href="https://www.gongsilnews.com/" target="_blank" class="logo">
+                <img src="logo.png" alt="공실뉴스" style="height: 40px;">
+                <span class="beta-badge">map 베타서비스</span>
+            </a>
+            <nav class="nav">
+                <!-- 탭 버튼 (data-category 속성 사용) -->
+                <a href="#" class="nav-tab active" data-category="전체기사">전체기사</a>
+                <a href="#" class="nav-tab" data-category="공실뉴스">공실뉴스</a>
+                <a href="#" class="nav-tab" data-category="뉴스칼럼">뉴스칼럼</a>
+                <!-- <a href="#" class="nav-tab" data-category="공실스터디">공실스터디</a> -->
+                <!-- <a href="#" class="nav-tab" data-category="부동산찾기">부동산 찾기</a> -->
+            </nav>
+        </div>
+        <div class="header-right">
+            <a href="https://www.gongsilnews.com/member/login.html" target="_blank" class="btn-login">로그인 및 회원가입</a>
+            <a href="https://smartstore.naver.com/mygongsil/products/10361563253" target="_blank" class="btn-biz">중개사무소
+                가입 및 상품문의
+                &gt;</a>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 (지도 + 사이드바) -->
+    <main class="main-container">
+        <!-- 지도 영역 -->
+        <div class="map-wrapper">
+            <!-- 검색바 오버레이 -->
+            <div class="search-overlay">
+                <input type="text" placeholder="지역, 지하철역, 학교 검색" class="search-input">
+                <button class="search-btn">🔍</button>
+            </div>
+
+            <div id="map"></div>
+        </div>
+
+        <!-- 우측 사이드바 (뉴스 리스트) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>최신 뉴스</h2> <!-- 카테고리에 따라 변경됨 -->
+                <!-- <div class="period-filters">
+                    <button class="filter-btn active" data-period="all">전체</button>
+                    <button class="filter-btn" data-period="today">오늘</button>
+                    <button class="filter-btn" data-period="week">1주</button>
+                    <button class="filter-btn" data-period="month">1달</button>
+                    <button class="filter-btn" data-period="6month">6달</button>
+                </div> -->
+            </div>
+            <div id="news-content" class="news-list">
+                <!-- 자바스크립트로 뉴스 로드됨 -->
+                <div class="loading-spinner">뉴스 불러오는 중...</div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Kakao Map SDK -->
+    <script type="text/javascript"
+        src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=435d3602201a49ea712e5f5a36fe6efc&libraries=clusterer"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부동산 정보 등록 (관리자)</title>
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #ff9f1c;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #ff9f1c;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #e88d15;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .col {
+            flex: 1;
+        }
+
+        #map {
+            width: 100%;
+            height: 300px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .msg {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+    <!-- 카카오 지도 SDK (https 명시) -->
+    <script type="text/javascript"
+        src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=963be8495a63901416fb1354f738c826&libraries=services"></script>
+    <!-- 다음 주소 검색 SDK (https 명시) -->
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <h1>🏢 부동산 매물/중개사 등록</h1>
+    <div id="message" class="msg"></div>
+
+    <form id="estateForm">
+        <div class="row">
+            <div class="col form-group">
+                <label>회사명 (필수)</label>
+                <input type="text" id="company_name" required placeholder="(주)빌드온 부동산중개법인">
+            </div>
+            <div class="col form-group">
+                <label>대표자명 (필수)</label>
+                <input type="text" id="ceo_name" required placeholder="홍길동">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col form-group">
+                <label>등록번호</label>
+                <input type="text" id="registration_number" placeholder="11650-2017-00221">
+            </div>
+            <div class="col form-group">
+                <label>사업자번호</label>
+                <input type="text" id="business_number" placeholder="123-45-67890">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>주소 검색 (필수)</label>
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="address" required placeholder="주소 검색 버튼을 눌러주세요" readonly>
+                <button type="button" onclick="execDaumPostcode()" style="white-space:nowrap;">🔍 주소 찾기</button>
+            </div>
+            <input type="text" id="address_detail" placeholder="상세주소 (예: 101동 101호)" style="margin-top:5px;">
+            <div id="map"></div> <!-- 지도 미리보기 -->
+        </div>
+
+        <!-- 숨겨진 좌표 필드 -->
+        <input type="hidden" id="lat">
+        <input type="hidden" id="lng">
+
+        <div class="row">
+            <div class="col form-group">
+                <label>휴대전화</label>
+                <input type="text" id="phone_mobile" placeholder="010-1234-5678">
+            </div>
+            <div class="col form-group">
+                <label>사무실전화</label>
+                <input type="text" id="phone_office" placeholder="02-123-4567">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>업체 상세 소개</label>
+            <textarea id="description" rows="4" placeholder="업체에 대한 상세한 소개를 입력하세요."></textarea>
+        </div>
+
+        <div class="row">
+            <div class="col form-group">
+                <label>게시 시작일</label>
+                <input type="date" id="start_date">
+            </div>
+            <div class="col form-group">
+                <label>게시 종료일</label>
+                <input type="date" id="end_date">
+            </div>
+        </div>
+
+        <h3>🔗 링크 정보 (선택)</h3>
+        <div class="row">
+            <div class="col form-group">
+                <label>문의하기 URL</label>
+                <input type="url" id="inquiry_url" placeholder="https://open.kakao.com/...">
+            </div>
+            <div class="col form-group">
+                <label>홈페이지</label>
+                <input type="url" id="website_url" placeholder="http://example.com">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col form-group">
+                <label>유튜브</label>
+                <input type="url" id="youtube_url">
+            </div>
+            <div class="col form-group">
+                <label>블로그</label>
+                <input type="url" id="blog_url">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col form-group">
+                <label>인스타그램</label>
+                <input type="url" id="instagram_url">
+            </div>
+            <div class="col form-group">
+                <label>페이스북</label>
+                <input type="url" id="facebook_url">
+            </div>
+            <div class="col form-group">
+                <label>쓰레드</label>
+                <input type="url" id="threads_url">
+            </div>
+        </div>
+
+        <button type="submit" style="width:100%; margin-top:20px;">✅ 부동산 등록하기</button>
+    </form>
+
+    <script>
+        // Supabase 설정
+        const SUPABASE_URL = 'https://imtdijfseaninhvjoklp.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_fY0K_-WP3PyG5ihvxgCPSw_bYewHmnR';
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // 오늘 날짜 기본 설정
+        document.getElementById('start_date').valueAsDate = new Date();
+
+        // 다음 주소 검색
+        function execDaumPostcode() {
+            if (typeof daum === 'undefined') {
+                alert("주소 검색 스크립트가 로딩되지 않았습니다. 인터넷 연결을 확인하거나 페이지를 새로고침해주세요.");
+                return;
+            }
+
+            new daum.Postcode({
+                oncomplete: function (data) {
+                    var addr = data.roadAddress || data.jibunAddress;
+                    document.getElementById("address").value = addr;
+
+                    // 카카오 지도 라이브러리 체크
+                    if (typeof kakao === 'undefined' || !kakao.maps || !kakao.maps.services) {
+                        alert("지도 라이브러리가 로딩되지 않아 좌표를 자동생성할 수 없습니다. (API 키/도메인 확인 필요)");
+                        return;
+                    }
+
+                    // 주소로 좌표 검색
+                    var geocoder = new kakao.maps.services.Geocoder();
+                    geocoder.addressSearch(addr, function (result, status) {
+                        if (status === kakao.maps.services.Status.OK) {
+                            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                            document.getElementById('lat').value = result[0].y;
+                            document.getElementById('lng').value = result[0].x;
+
+                            // 지도 보여주기
+                            var mapContainer = document.getElementById('map');
+                            mapContainer.style.display = "block";
+                            var mapOption = { center: coords, level: 3 };
+                            var map = new kakao.maps.Map(mapContainer, mapOption);
+                            var marker = new kakao.maps.Marker({ position: coords, map: map });
+                        } else {
+                            alert("좌표를 찾을 수 없는 주소입니다.");
+                        }
+                    });
+                }
+            }).open();
+        }
+
+        // 폼 제출
+        document.getElementById('estateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const lat = document.getElementById('lat').value;
+            const lng = document.getElementById('lng').value;
+
+            if (!lat || !lng) {
+                alert('주소를 검색해서 좌표를 설정해주세요!');
+                return;
+            }
+
+            const formData = {
+                company_name: document.getElementById('company_name').value,
+                ceo_name: document.getElementById('ceo_name').value,
+                registration_number: document.getElementById('registration_number').value,
+                business_number: document.getElementById('business_number').value,
+                address: document.getElementById('address').value,
+                address_detail: document.getElementById('address_detail').value,
+                lat: parseFloat(lat),
+                lng: parseFloat(lng),
+                phone_mobile: document.getElementById('phone_mobile').value,
+                phone_office: document.getElementById('phone_office').value,
+                description: document.getElementById('description').value,
+                start_date: document.getElementById('start_date').value,
+                end_date: document.getElementById('end_date').value || null,
+                inquiry_url: document.getElementById('inquiry_url').value,
+                website_url: document.getElementById('website_url').value,
+                youtube_url: document.getElementById('youtube_url').value,
+                blog_url: document.getElementById('blog_url').value,
+                instagram_url: document.getElementById('instagram_url').value,
+                facebook_url: document.getElementById('facebook_url').value,
+                threads_url: document.getElementById('threads_url').value,
+            };
+
+            // 빈 문자열은 null로 처리
+            Object.keys(formData).forEach(key => {
+                if (formData[key] === "") formData[key] = null;
+            });
+
+            try {
+                const { data, error } = await supabase
+                    .from('real_estate')
+                    .insert([formData])
+                    .select();
+
+                const msgDiv = document.getElementById('message');
+                msgDiv.style.display = 'block';
+
+                if (error) throw error;
+
+                msgDiv.className = 'msg success';
+                msgDiv.innerText = '✅ 성공적으로 등록되었습니다!';
+                window.scrollTo(0, 0);
+
+                // 폼 초기화
+                e.target.reset();
+                document.getElementById('map').style.display = 'none';
+                document.getElementById('start_date').valueAsDate = new Date(); // 날짜 다시 세팅
+
+            } catch (error) {
+                const msgDiv = document.getElementById('message');
+                msgDiv.className = 'msg error';
+                msgDiv.innerText = '❌ 에러 발생: ' + error.message;
+                window.scrollTo(0, 0);
+            }
+        });
+    </script>
+</body>
+
+</html>

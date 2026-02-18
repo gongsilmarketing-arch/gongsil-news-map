@@ -1,0 +1,29 @@
+name: Update RSS News
+
+on:
+  schedule:
+    - cron: '0 * * * *' # 매시간 0분에 실행 (1시간마다)
+  workflow_dispatch: # 수동 실행 가능
+
+jobs:
+  update-news:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run ingest script
+      env:
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        KAKAO_REST_API_KEY: ${{ secrets.KAKAO_REST_API_KEY }}
+      run: node ingest.js
