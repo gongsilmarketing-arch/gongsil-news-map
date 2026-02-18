@@ -466,17 +466,17 @@ body {
 /* ---------------------------------------------------- */
 .overlay-wrap {
     position: absolute;
-    bottom: 52px;
+    bottom: 50px;
     /* 마커 꼬리 위치 고려 */
     left: 50%;
     transform: translateX(-50%);
     width: 300px;
     background-color: #ffffff !important;
-    padding: 20px;
-    border-radius: 8px;
-    /* 조금 더 각진 모서리 (오리지널 느낌) */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    /* 깔끔한 그림자 */
+    padding: 24px;
+    border-radius: 16px;
+    /* 둥근 모서리 적용 */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    /* 입체감 있는 그림자 */
     z-index: 1000;
     font-family: 'Pretendard', sans-serif;
     box-sizing: border-box;
@@ -555,12 +555,12 @@ body {
     display: block;
     /* 블록 요소로 변경하여 우측 정렬 용이하게 */
     text-align: right;
-    font-size: 13px;
-    color: #4A90E2;
+    font-size: 14px;
+    color: #3b82f6;
     /* 오리지널 파란색 */
     text-decoration: none;
-    font-weight: bold;
-    margin-top: 5px;
+    font-weight: 600;
+    margin-top: 10px;
 }
 
 .overlay-link:hover {
