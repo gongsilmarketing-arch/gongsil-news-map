@@ -159,19 +159,24 @@ body {
 }
 
 /* Search Overlay */
-.search-overlay {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 50;
-    /* 지도 위에 뜨도록 */
+/* Search Box (in Sidebar) */
+.search-box {
+    /* 원래 .search-overlay 였던 것 */
+    width: 100%;
+    margin-bottom: 20px;
     background: white;
-    border-radius: 4px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--border-color);
+    /* 테두리 추가 */
+    border-radius: 8px;
+    /* 둥글게 */
     display: flex;
-    padding: 5px;
-    width: 320px;
-    max-width: 80%;
+    padding: 2px;
+    box-sizing: border-box;
+}
+
+.search-box:focus-within {
+    border-color: var(--primary-color);
+    /* 포커스 시 강조 */
 }
 
 .search-input {
