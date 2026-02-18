@@ -365,30 +365,35 @@ body {
 
     /* 검색창 위치 조정 (헤더 아래로) */
     .search-container {
-        top: 10px;
-        /* 헤더 바로 아래 */
+        top: 60px;
+        /* 헤더 아래로 */
         left: 50%;
         transform: translateX(-50%);
-        /* 중앙 정렬 */
         width: 90%;
-        /* 모바일에서 넓게 */
         max-width: none;
+        z-index: 900;
+        /* 헤더보다 아래 */
     }
 
     .search-input {
         width: 100%;
         font-size: 14px;
         height: 40px;
-        /* 터치하기 좋게 */
+        background: #fff;
+        /* 배경 흰색 */
     }
 
     /* 오버레이(정보창) 모바일 최적화 */
     .overlay-wrap {
         width: 280px;
-        /* 너비 줄임 */
         padding: 15px;
         bottom: 60px;
-        /* 마커 위로 좀 더 올림 */
+        background-color: #fff !important;
+        /* 투명 배경 방지 */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        /* 그림자 강화 */
+        border-radius: 12px;
+        z-index: 100;
     }
 
     .overlay-title {
