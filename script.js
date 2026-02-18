@@ -427,7 +427,7 @@ function renderMarkers(newsList) {
                 }
 
                 const content = `
-                    <div class="overlay-wrap">
+                    <div class="overlay-wrap" style="background-color: #ffffff; background: #ffffff;">
                         <div class="overlay-header">
                             <h3 class="overlay-title">${displayTitle}</h3>
                             <button class="overlay-close" onclick="closeOverlay()">×</button>
