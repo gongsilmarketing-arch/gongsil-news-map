@@ -42,15 +42,23 @@ body {
     gap: 32px;
 }
 
-.logo {
+.logo-group {
     display: flex;
     align-items: center;
     margin-right: 15px;
-    cursor: pointer;
+}
+
+.logo-img-link {
+    display: block;
     text-decoration: none;
 }
 
-.logo img {
+.logo-text-link {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.logo-group img {
     display: block;
     height: 40px;
     width: auto;
