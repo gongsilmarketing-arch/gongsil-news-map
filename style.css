@@ -472,11 +472,14 @@ body {
     /* 너비 증가 */
     max-width: 90vw;
     /* 모바일 대응 */
-    background: white;
+    background-color: #ffffff !important;
+    /* 배경 흰색 강제 */
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-    /* 부드러운 그림자 */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    /* 그림자 더 진하게 */
+    z-index: 1000;
+    /* 확실하게 위로 */
     font-family: 'Pretendard', -apple-system, sans-serif;
     /* 폰트 통일 */
     text-align: left;
