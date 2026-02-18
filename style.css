@@ -383,17 +383,15 @@ body {
         /* 배경 흰색 */
     }
 
-    /* 오버레이(정보창) 모바일 최적화 */
+    /* 오버레이(정보창) 모바일 최적화 - PC 스타일 상속하고 위치/크기만 조절 */
     .overlay-wrap {
         width: 280px;
-        padding: 15px;
+        /* 모바일 폭에 맞춤 */
         bottom: 60px;
-        background-color: #fff !important;
-        /* 투명 배경 방지 */
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        /* 그림자 강화 */
-        border-radius: 12px;
-        z-index: 100;
+        /* 마커 위로 */
+        padding: 20px;
+        /* 내부 여백 조절 */
+        /* border-radius, box-shadow 등은 PC 설정 상속 */
     }
 
     .overlay-title {
@@ -466,21 +464,24 @@ body {
 /* ---------------------------------------------------- */
 .overlay-wrap {
     position: absolute;
-    bottom: 50px;
+    bottom: 55px;
     /* 마커 꼬리 위치 고려 */
     left: 50%;
     transform: translateX(-50%);
-    width: 300px;
+    width: 320px;
     background-color: #ffffff !important;
-    padding: 24px;
-    border-radius: 16px;
-    /* 둥근 모서리 적용 */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    /* 입체감 있는 그림자 */
+    padding: 25px;
+    /* 여백 증가 */
+    border-radius: 20px;
+    /* 더 둥글게 */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.1);
+    /* 깊이감 있는 이중 그림자 */
     z-index: 1000;
     font-family: 'Pretendard', sans-serif;
     box-sizing: border-box;
     text-align: left;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    /* 아주 연한 테두리 */
 }
 
 /* 말풍선 꼬리 */
