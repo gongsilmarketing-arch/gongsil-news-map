@@ -427,16 +427,16 @@ function renderMarkers(newsList) {
                 }
 
                 const content = `
-                    <div class="overlay-wrap" style="background-color: #ffffff; background: #ffffff;">
-                        <div class="overlay-header">
-                            <h3 class="overlay-title">${displayTitle}</h3>
-                            <button class="overlay-close" onclick="closeOverlay()">×</button>
+                    <div class="overlay-wrap" style="width: 300px; background: #ffffff; border-radius: 20px; padding: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); border: 1px solid rgba(0,0,0,0.05); text-align: left; font-family: 'Pretendard', sans-serif; position: relative;">
+                        <div class="overlay-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                            <h3 class="overlay-title" style="font-size: 17px; font-weight: 700; color: #222; margin: 0; line-height: 1.35; width: 240px; word-break: keep-all; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${displayTitle}</h3>
+                            <button class="overlay-close" onclick="closeOverlay()" style="background: none; border: none; font-size: 22px; color: #ccc; cursor: pointer; padding: 0; margin-left: 10px; line-height: 1;">×</button>
                         </div>
                         <div class="overlay-body">
-                            <p class="overlay-desc">${news.description ? news.description.substring(0, 50) + '...' : '내용 없음'}</p>
-                            <div class="overlay-meta">${date} | ${news.author || '공실뉴스'}</div>
-                            <a href="${news.link}" target="_blank" class="overlay-link">기사 보러가기 →</a>
+                            <div class="overlay-meta" style="font-size: 12px; color: #888; margin-bottom: 15px; font-weight: 400;">${date} | ${news.author || '공실뉴스'}</div>
+                            <a href="${news.link}" target="_blank" class="overlay-link" style="display: block; text-align: right; font-size: 12px; color: #3b82f6; text-decoration: none; font-weight: 600;">기사 보러가기 →</a>
                         </div>
+                        <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #ffffff; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.05));"></div>
                     </div>
                 `;
 
