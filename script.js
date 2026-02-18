@@ -427,7 +427,7 @@ function renderMarkers(newsList) {
                 }
 
                 const content = `
-                    <div class="overlay-wrap" style="width: 300px; background: #ffffff; border-radius: 20px; padding: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); border: 1px solid rgba(0,0,0,0.05); text-align: left; font-family: 'Pretendard', sans-serif; position: relative;">
+                    <div class="overlay-wrap" style="width: 300px; background: #ffffff; border-radius: 20px; padding: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); border: 1px solid rgba(0,0,0,0.05); text-align: left; font-family: 'Pretendard', sans-serif; position: relative; z-index: 9999 !important;">
                         <div class="overlay-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
                             <h3 class="overlay-title" style="font-size: 17px; font-weight: 700; color: #222; margin: 0; line-height: 1.35; width: 240px; word-break: keep-all; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${displayTitle}</h3>
                             <button class="overlay-close" onclick="closeOverlay()" style="background: none; border: none; font-size: 22px; color: #ccc; cursor: pointer; padding: 0; margin-left: 10px; line-height: 1;">×</button>
