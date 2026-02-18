@@ -443,7 +443,8 @@ function renderMarkers(newsList) {
                 const overlay = new kakao.maps.CustomOverlay({
                     content: content,
                     map: map,
-                    position: marker.getPosition()
+                    position: marker.getPosition(),
+                    zIndex: 9999 // 오버레이를 지도의 최상층 레이어로 배정
                 });
 
                 currentOverlay = overlay;
