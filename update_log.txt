@@ -70,3 +70,68 @@ Processed 16 items in 공실스터디.
 All done! Total processed: 106
 [2026-02-19 11:55:27.79] Auto Update Completed 
 ================================================== 
+================================================== 
+[2026-02-19 12:55:02.02] Auto Update Started 
+
+Fetching [전체기사] from: https://www.gongsilnews.com/rss/allArticle.xml
+Found 50 articles.
+.....^C================================================== 
+[2026-02-19 13:55:02.39] Auto Update Started 
+
+Fetching [전체기사] from: https://www.gongsilnews.com/rss/allArticle.xml
+Found 50 articles.
+..................................................
+Processed 50 items in 전체기사.
+
+Fetching [공실뉴스] from: https://www.gongsilnews.com/rss/S1N1.xml
+Found 20 articles.
+....................
+Processed 20 items in 공실뉴스.
+
+Fetching [뉴스칼럼] from: https://www.gongsilnews.com/rss/S1N4.xml
+Found 20 articles.
+....................
+Processed 20 items in 뉴스칼럼.
+
+Fetching [공실스터디] from: https://www.gongsilnews.com/rss/S1N5.xml
+Found 16 articles.
+................
+Processed 16 items in 공실스터디.
+
+All done! Total processed: 106
+[2026-02-19 13:55:28.42] Auto Update Completed 
+================================================== 
+================================================== 
+[2026-02-19 14:55:01.63] Auto Update Started 
+
+Fetching [전체기사] from: https://www.gongsilnews.com/rss/allArticle.xml
+Found 50 articles.
+..................................................
+Processed 50 items in 전체기사.
+
+Fetching [공실뉴스] from: https://www.gongsilnews.com/rss/S1N1.xml
+Found 20 articles.
+....................
+Processed 20 items in 공실뉴스.
+
+Fetching [뉴스칼럼] from: https://www.gongsilnews.com/rss/S1N4.xml
+Found 20 articles.
+....................
+Processed 20 items in 뉴스칼럼.
+
+Fetching [공실스터디] from: https://www.gongsilnews.com/rss/S1N5.xml
+Found 16 articles.
+................
+Processed 16 items in 공실스터디.
+
+All done! Total processed: 106
+[2026-02-19 14:55:27.41] Auto Update Completed 
+================================================== 
+================================================== 
+[2026-02-19 15:55:02.27] Auto Update Started 
+
+Fetching [전체기사] from: https://www.gongsilnews.com/rss/allArticle.xml
+Found 50 articles.
+...^C================================================== 
+[2026-02-19 16:55:02.28] Auto Update Started 
+^C
