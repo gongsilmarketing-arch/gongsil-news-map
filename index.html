@@ -35,12 +35,8 @@
                 </a>
             </div>
             <nav class="nav">
-                <!-- 탭 버튼 (data-category 속성 사용) -->
-                <a href="#" class="nav-tab active" data-category="전체기사">전체기사</a>
-                <a href="#" class="nav-tab" data-category="공실뉴스">공실뉴스</a>
-                <a href="#" class="nav-tab" data-category="뉴스칼럼">뉴스칼럼</a>
-                <!-- <a href="#" class="nav-tab" data-category="공실스터디">공실스터디</a> -->
-                <!-- <a href="#" class="nav-tab" data-category="부동산찾기">부동산 찾기</a> -->
+                <!-- 탭 버튼 (상단 메뉴 단순화) -->
+                <a href="#" class="nav-tab active">뉴스기사</a>
             </nav>
         </div>
         <div class="header-right">
@@ -68,14 +64,16 @@
                     <input type="text" placeholder="지역, 지하철역, 학교 검색" class="search-input">
                     <button class="search-btn">🔍</button>
                 </div>
+
+                <!-- 카테고리 필터 (검색 아래 배치) -->
+                <div class="category-filters">
+                    <button class="category-btn active" data-category="전체기사">전체뉴스</button>
+                    <button class="category-btn" data-category="공실뉴스">공실뉴스</button>
+                    <button class="category-btn" data-category="뉴스칼럼">뉴스칼럼</button>
+                    <button class="category-btn" data-category="공실스터디">공실스터디</button>
+                </div>
+
                 <h2>최신 뉴스</h2> <!-- 카테고리에 따라 변경됨 -->
-                <!-- <div class="period-filters">
-                    <button class="filter-btn active" data-period="all">전체</button>
-                    <button class="filter-btn" data-period="today">오늘</button>
-                    <button class="filter-btn" data-period="week">1주</button>
-                    <button class="filter-btn" data-period="month">1달</button>
-                    <button class="filter-btn" data-period="6month">6달</button>
-                </div> -->
             </div>
             <div id="news-content" class="news-list">
                 <!-- 자바스크립트로 뉴스 로드됨 -->
@@ -87,7 +85,7 @@
     <!-- Kakao Map SDK -->
     <script type="text/javascript"
         src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=435d3602201a49ea712e5f5a36fe6efc&libraries=clusterer"></script>
-    <script src="script.js?v=1.2"></script>
+    <script src="script.js?v=1.3"></script>
 </body>
 
 </html>

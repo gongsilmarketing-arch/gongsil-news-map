@@ -196,6 +196,49 @@ body {
     cursor: pointer;
 }
 
+/* Category Filters (Sidebar) */
+.category-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 4px;
+    /* 스크롤바 숨김 */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.category-filters::-webkit-scrollbar {
+    display: none;
+}
+
+.category-btn {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    flex-shrink: 0;
+}
+
+.category-btn:hover {
+    background: #f5f5f5;
+    color: #333;
+    border-color: #ccc;
+}
+
+.category-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    font-weight: bold;
+}
+
 /* Sidebar (News List) */
 .sidebar {
     width: 380px;

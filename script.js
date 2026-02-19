@@ -142,17 +142,21 @@ function performSearch() {
 }
 
 
-// 탭 클릭 이벤트 설정
-document.querySelectorAll('.nav-tab').forEach(tab => {
-    tab.addEventListener('click', async (e) => {
+// 카테고리 버튼 클릭 이벤트 설정
+document.querySelectorAll('.category-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
         e.preventDefault();
 
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        // 버튼 스타일 업데이트
+        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
         e.target.classList.add('active');
 
-        document.querySelector('.search-input').value = '';
+        // 검색어 초기화
+        const searchInput = document.querySelector('.search-input');
+        if (searchInput) searchInput.value = '';
 
         currentCategory = e.target.getAttribute('data-category');
+        console.log(`Category changed to: ${currentCategory}`);
 
         if (currentCategory === '부동산찾기') {
             await loadRealEstate();
@@ -162,6 +166,7 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
         await loadNews(currentCategory);
     });
 });
+
 
 
 // 3. 데이터 로드
@@ -465,31 +470,7 @@ function renderMarkers(newsList) {
     clusterer.addMarkers(validMarkers);
 }
 
-// 기간 필터 및 탭 메뉴 이벤트 리스너 (문서 로드 후 바인딩)
+// 초기화 완료
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. 기간 필터 버튼 이벤트
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    if (filterBtns) {
-        console.log('기간 필터 버튼 설정 완료');
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // 버튼 활성화 스타일 변경
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                // 기간 설정 및 뉴스 재로드
-                currentPeriod = btn.dataset.period;
-                console.log(`기간 필터 변경: ${currentPeriod}`);
-
-                // 부동산 탭인 경우 처리
-                if (currentCategory === '부동산찾기') {
-                    if (typeof loadRealEstate === 'function') loadRealEstate();
-                } else {
-                    if (typeof loadNews === 'function') loadNews(currentCategory);
-                }
-            });
-        });
-    }
-
-    // 2. 탭 메뉴 이벤트도 여기서 한번 더 챙길 수 있음 (이미 기존 로직 있으면 중복 주의)
+    console.log('초기화 완료');
 });
