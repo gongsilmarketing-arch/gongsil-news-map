@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 - 공실뉴스</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .auth-container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            background-color: #ff9f1c;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #e88d15;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .links a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .msg {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            display: none;
+            font-size: 14px;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="auth-container">
+        <h1>회원가입</h1>
+        <div id="message" class="msg"></div>
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" id="email" required placeholder="name@example.com">
+            </div>
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" required placeholder="6자 이상 입력해주세요">
+            </div>
+            <button type="submit" id="submitBtn">가입하기</button>
+        </form>
+        <div class="links">
+            이미 계정이 있으신가요? <a href="login.html">로그인하기</a>
+        </div>
+    </div>
+
+    <script>
+        const signupForm = document.getElementById('signupForm');
+        const messageDiv = document.getElementById('message');
+        const submitBtn = document.getElementById('submitBtn');
+
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (password.length < 6) {
+                showMessage('error', '비밀번호는 6자 이상이어야 합니다.');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = '가입 처리중...';
+
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                });
+
+                if (error) throw error;
+
+                showMessage('success', '가입 확인 이메일을 보냈습니다. 이메일을 확인해주세요!');
+                signupForm.reset();
+
+            } catch (error) {
+                showMessage('error', error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = '가입하기';
+            }
+        });
+
+        function showMessage(type, text) {
+            messageDiv.style.display = 'block';
+            messageDiv.className = `msg ${type}`;
+            messageDiv.innerText = text;
+        }
+    </script>
+
+</body>
+
+</html>

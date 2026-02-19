@@ -96,13 +96,24 @@
         src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=963be8495a63901416fb1354f738c826&libraries=services"></script>
     <!-- 다음 주소 검색 SDK (https 명시) -->
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <!-- Supabase SDK -->
+    <!-- Supabase SDK & Auth -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
 </head>
 
 <body>
 
-    <h1>🏢 부동산 매물/중개사 등록</h1>
+
+    <div
+        style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ff9f1c; padding-bottom: 10px; margin-bottom: 20px;">
+        <h1 style="border:none; padding:0; margin:0;">🏢 부동산 매물/중개사 등록</h1>
+        <div style="text-align: right;">
+            <a href="index.html" style="text-decoration:none; margin-right:10px; font-size:14px; color:#333;">🏠 홈으로</a>
+            <span id="userEmail" style="font-size: 14px; color: #666; margin-right: 10px;"></span>
+            <button onclick="logout()"
+                style="padding: 5px 10px; font-size: 12px; background-color: #666; color:white; border:none; border-radius:4px; cursor:pointer;">로그아웃</button>
+        </div>
+    </div>
     <div id="message" class="msg"></div>
 
     <form id="estateForm">
@@ -209,10 +220,14 @@
     </form>
 
     <script>
-        // Supabase 설정
-        const SUPABASE_URL = 'https://imtdijfseaninhvjoklp.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_fY0K_-WP3PyG5ihvxgCPSw_bYewHmnR';
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        // 로그인 체크
+        let currentUser = null;
+
+        // 페이지 로드 시 인증 확인
+        checkAuth().then(session => {
+            currentUser = session.user;
+            document.getElementById('userEmail').innerText = currentUser.email;
+        });
 
         // 오늘 날짜 기본 설정
         document.getElementById('start_date').valueAsDate = new Date();
@@ -296,6 +311,9 @@
             Object.keys(formData).forEach(key => {
                 if (formData[key] === "") formData[key] = null;
             });
+
+            // 작성자 ID 추가
+            formData.user_id = currentUser.id;
 
             try {
                 const { data, error } = await supabase

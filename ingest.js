@@ -154,6 +154,10 @@ async function fetchAndStoreNews() {
 
         const cleanDescription = (item.contentSnippet || item.content || '').substring(0, 300);
 
+        // 카테고리 결정
+        // 카테고리 결정 (사용자 요청대로 RSS 설정값 그대로 사용)
+        const category = feedInfo.category;
+
         const newsData = {
           title: item.title,
           link: item.link,
@@ -164,7 +168,7 @@ async function fetchAndStoreNews() {
           lng: lng,
           image_url: imageUrl,
           source: 'gongsilnews',
-          category: feedInfo.category
+          category: category
         };
 
         const { error } = await supabase
