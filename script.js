@@ -438,7 +438,7 @@ function renderMarkers(newsList) {
                             <button class="overlay-close" onclick="closeOverlay()" style="background: none; border: none; font-size: 22px; color: #ccc; cursor: pointer; padding: 0; margin-left: 10px; line-height: 1;">×</button>
                         </div>
                         <div class="overlay-body">
-                            <div class="overlay-desc" style="font-size: 13px; color: #666; margin-bottom: 12px;">${(news.description || '').length > 27 ? (news.description || '').substring(0, 27) + '...' : (news.description || '')}</div>
+                            <div class="overlay-desc" style="font-size: 13px; color: #666; margin-bottom: 12px; display: block;">${(news.description || '').length > 27 ? (news.description || '').substring(0, 27) + '...' : (news.description || '')}</div>
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div class="overlay-meta" style="font-size: 12px; color: #888; font-weight: 400;">${date} | ${news.author || '공실뉴스'}</div>
                                 <a href="${news.link}" target="_blank" class="overlay-link" style="display: block; text-align: right; font-size: 12px; color: #3b82f6; text-decoration: none; font-weight: 600;">기사 보러가기 →</a>
