@@ -349,159 +349,211 @@ body {
 /* Mobile Responsive */
 @media (max-width: 768px) {
 
-    /* 레이아웃 세로 분할 */
+    /* 레이아웃: 맵을 전체 화면으로, 나머지는 오버레이 */
     .main-container {
-        flex-direction: column;
-        /* 모바일 브라우저 높이 이슈 대응 */
+        display: block;
+        /* Flex column 제거 */
+        position: relative;
         height: calc(100vh - 50px);
+        /* 헤더 제외 높이 */
+        overflow: hidden;
     }
 
-    /* 지도 영역 */
+    /* 지도 영역 - 전체 배경으로 깔림 */
     .map-wrapper {
-        height: 60%;
-        /* 지도 비중을 높임 (터치 주 영역) */
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        order: 1;
+        height: 100%;
+        z-index: 1;
+        /* 기존 width/height/order override */
+        order: unset;
     }
 
-    /* 리스트 영역 */
+    #map {
+        width: 100%;
+        height: 100%;
+    }
+
+    /* 사이드바 - 상단 검색/필터 + 하단 리스트로 분리 연출 */
     .sidebar {
+        /* 사이드바 컨테이너는 하단 시트 역할 */
+        position: absolute;
+        bottom: 0;
+        left: 0;
         width: 100%;
-        min-width: 0;
         height: 40%;
-        order: 2;
+        /* 하단 40% 차지 */
+        min-width: 0;
+        background: white;
+        border-top: none;
         border-left: none;
-        border-top: 1px solid #ccc;
-        /* 구분선 명확히 */
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
         z-index: 50;
+        display: flex;
+        flex-direction: column;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        order: unset;
     }
 
-    /* 헤더 고정 및 간소화 */
+    /* 상단 검색바 - 사이드바에서 탈출하여 상단 고정 */
+    .search-box {
+        position: fixed;
+        top: 60px;
+        /* 헤더(50px) 아래 */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 92%;
+        /* 좌우 여백 고려 */
+        z-index: 101;
+        /* 지도보다 위 */
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin: 0;
+        padding: 4px;
+        height: 48px;
+        box-sizing: border-box;
+    }
+
+    /* 기사 보기 버튼(필터) - 검색바 아래 고정 */
+    .category-filters {
+        position: fixed;
+        top: 118px;
+        /* 검색바(60+48=108) + 여백 10 */
+        left: 0;
+        width: 100%;
+        z-index: 101;
+        padding-left: 20px;
+        padding-right: 20px;
+        box-sizing: border-box;
+        margin: 0;
+        overflow-x: auto;
+        white-space: nowrap;
+        background: transparent;
+        /* 스크롤바 숨기기 */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .category-filters::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* 필터 버튼 스타일 조정 (모바일) */
+    .category-btn {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid white;
+        padding: 6px 14px;
+        font-size: 13px;
+        margin-right: 6px;
+    }
+
+    .category-btn.active {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+    }
+
+    /* 하단 시트 헤더 (제목) */
+    .sidebar-header {
+        padding: 15px 20px 10px 20px;
+        border-bottom: 1px solid #f0f0f0;
+        background: white;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        flex-shrink: 0;
+        /* 검색/필터가 빠져나갔으므로 높이 재조정 */
+        min-height: auto;
+    }
+
+    .sidebar-header h2 {
+        font-size: 16px;
+        color: #333;
+        margin: 0;
+    }
+
+    /* 뉴스 리스트 */
+    .news-list {
+        flex: 1;
+        overflow-y: auto;
+        background: white;
+        padding-bottom: 20px;
+    }
+
+    /* 헤더 스타일 유지 */
     .header {
         position: sticky;
         top: 0;
         z-index: 1000;
         height: 50px;
-        padding: 0 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        /* 고정 효과 */
+        padding: 0 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     .header-left {
-        gap: 10px;
+        gap: 12px;
         flex: 1;
-        /* 남은 공간 차지 */
-        min-width: 0;
-        /* flex 자식 줄임 허용 */
-    }
-
-    /* 로고 그룹 너비 유동적 조절 */
-    .logo-group {
-        flex-shrink: 0;
     }
 
     .logo-img-link img {
-        height: 32px;
-        /* 로고 크기 축소 */
+        height: 28px;
     }
 
     .beta-badge {
         font-size: 10px;
-        margin-left: 4px;
+        margin-top: 4px;
     }
 
-    /* 검색창 위치 조정 (헤더 아래로) */
-    .search-container {
-        top: 60px;
-        /* 헤더 아래로 */
+    /* 네비게이션 탭 (뉴스기사 등) */
+    .nav {
+        margin-left: auto;
+        overflow-x: auto;
+        white-space: nowrap;
+        flex: 1;
+        max-width: none;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .nav-tab {
+        font-size: 14px;
+        margin-right: 0;
+        padding-bottom: 15px;
+    }
+
+    .header-right {
+        display: none;
+    }
+
+    /* 오버레이 팝업 스타일 (지도 마커 클릭시) */
+    .overlay-wrap {
+        bottom: 42%;
+        /* 하단 시트(40%) 바로 위 */
+        width: 85%;
         left: 50%;
         transform: translateX(-50%);
-        width: 90%;
-        max-width: none;
-        z-index: 900;
-        /* 헤더보다 아래 */
-    }
-
-    .search-input {
-        width: 100%;
-        font-size: 14px;
-        height: 40px;
-        background: #fff;
-        /* 배경 흰색 */
-    }
-
-    /* 오버레이(정보창) 모바일 최적화 - PC 스타일 상속하고 위치/크기만 조절 */
-    .overlay-wrap {
-        width: 280px;
-        /* 모바일 폭에 맞춤 */
-        bottom: 60px;
-        /* 마커 위로 */
-        padding: 20px;
-        /* 내부 여백 조절 */
-        /* border-radius, box-shadow 등은 PC 설정 상속 */
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        padding: 16px;
     }
 
     .overlay-title {
         font-size: 15px;
-        /* 제목 크기 축소 */
-        margin-bottom: 8px;
     }
 
     .overlay-desc {
         font-size: 12px;
         -webkit-line-clamp: 2;
-        /* 2줄까지만 표시 */
         line-clamp: 2;
     }
-
-    .overlay-meta {
-        font-size: 11px;
-        margin-bottom: 8px;
-    }
-
-    .overlay-link {
-        font-size: 12px;
-        padding: 6px 0;
-    }
-}
-
-/* 중요: 모바일에서 상단 탭 메뉴 숨기거나 스크롤 가능하게 변경 */
-/* 현재는 공간 부족하므로 주요 탭만 남기거나 가로 스크롤 적용 */
-.nav {
-    overflow-x: auto;
-    white-space: nowrap;
-    flex: 1;
-    /* 남은 공간 모두 차지 */
-    max-width: none;
-    /* 너비 제한 해제 */
-    -webkit-overflow-scrolling: touch;
-
-    /* 스크롤바 숨기기 (크롬, 사파리, 엣지 등) */
-    scrollbar-width: none;
-    /* 파이어폭스 */
-    -ms-overflow-style: none;
-    /* IE, 엣지 */
-}
-
-.nav::-webkit-scrollbar {
-    display: none;
-    /* 크롬, 사파리 */
-}
-
-.nav-tab {
-    margin-right: 15px;
-    font-size: 13px;
-    padding-bottom: 14px;
-    /* 헤더 높이 50px 대응 */
-}
-
-.header-right {
-    display: none;
-    /* 모바일에서 우측 버튼 숨김 (필요시 햄버거 메뉴) */
-}
-
-/* ... Mobile Responsive Media Query ... */
 }
 
 /* ---------------------------------------------------- */
