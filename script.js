@@ -392,20 +392,23 @@ function renderMarkers(newsList) {
     }
 
 
-    // 커스텀 마커 이미지 (주황색 원 + 숫자 1, 테두리 흰색) - Base64 SVG
-    // SVG: <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="18" fill="#ff9f1c" stroke="white" stroke-width="2"/><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="16" font-family="sans-serif" font-weight="bold" fill="white">1</text></svg>
+    // 뉴스용 마커 (주황색)
     const svgBase64 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIGZpbGw9IiNmZjlmMWMiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTUlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjE2IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj4xPC90ZXh0Pjwvc3ZnPg==";
+
+    // 부동산용 마커 (파란색)
+    const estateSvgBase64 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIGZpbGw9IiMwMDdiZmYiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTUlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjIiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPvCfj6A8L3RleHQ+PC9zdmc+"; // 파란색 원에 집 이모지
 
     const markerImageSize = new kakao.maps.Size(40, 40);
     const markerImageOption = { offset: new kakao.maps.Point(20, 20) };
     const markerImage = new kakao.maps.MarkerImage(svgBase64, markerImageSize, markerImageOption);
+    const estateMarkerImage = new kakao.maps.MarkerImage(estateSvgBase64, markerImageSize, markerImageOption);
 
     newsList.forEach((news, index) => {
         if (news.lat && news.lng) {
             const marker = new kakao.maps.Marker({
                 position: new kakao.maps.LatLng(news.lat, news.lng),
                 title: news.title,
-                image: markerImage // 커스텀 이미지 적용
+                image: (news.category === '부동산') ? estateMarkerImage : markerImage // 로드한 마커 이미지 적용
             });
 
             // 마커 클릭 이벤트
@@ -418,41 +421,70 @@ function renderMarkers(newsList) {
                     card.classList.add('active');
                 }
 
-                // 2. 커스텀 오버레이 표시
-                if (currentOverlay) {
-                    currentOverlay.setMap(null);
-                }
+                // 오버레이 컨텐츠 생성 (부동산 vs 뉴스 분기)
+                let content = '';
 
-                const date = new Date(news.pub_date).toLocaleDateString();
+                if (news.category === '부동산') {
+                    // 부동산용 오버레이
+                    const snsLinks = `
+                        ${news.youtube_url ? `<a href="${news.youtube_url}" target="_blank" style="margin-right:5px;">📹</a>` : ''}
+                        ${news.blog_url ? `<a href="${news.blog_url}" target="_blank" style="margin-right:5px;">📝</a>` : ''}
+                        ${news.instagram_url ? `<a href="${news.instagram_url}" target="_blank" style="margin-right:5px;">📷</a>` : ''}
+                    `;
 
-                // 제목 글자수 제한 (25자)
-                let displayTitle = news.title;
-                if (displayTitle.length > 25) {
-                    displayTitle = displayTitle.substring(0, 25) + '...';
-                }
-
-                const content = `
-                    <div class="overlay-wrap" style="width: 300px; background: #ffffff; border-radius: 20px; padding: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); border: 1px solid rgba(0,0,0,0.05); text-align: left; font-family: 'Pretendard', sans-serif; position: relative; z-index: 9999 !important;">
-                        <div class="overlay-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
-                            <h3 class="overlay-title" style="font-size: 17px; font-weight: 700; color: #222; margin: 0; line-height: 1.35; width: 240px; word-break: keep-all; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${displayTitle}</h3>
-                            <button class="overlay-close" onclick="closeOverlay()" style="background: none; border: none; font-size: 22px; color: #ccc; cursor: pointer; padding: 0; margin-left: 10px; line-height: 1;">×</button>
-                        </div>
-                        <div class="overlay-body">
-                            <div class="overlay-desc" style="font-size: 13px; color: #666; margin-bottom: 12px; display: block;">${(news.description || '').length > 29 ? (news.description || '').substring(0, 29) + '...' : (news.description || '')}</div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div class="overlay-meta" style="font-size: 12px; color: #888; font-weight: 400; margin: 0;">${date} | ${news.author || '공실뉴스'}</div>
-                                <a href="${news.link}" target="_blank" class="overlay-link" style="display: block; text-align: right; font-size: 12px; color: #3b82f6; text-decoration: none; font-weight: 600; margin: 0;">기사 보러가기 →</a>
+                    content = `
+                        <div class="overlay-wrap" style="width: 320px; background: #ffffff; border-radius: 16px; padding: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.25); border: 1px solid #e0e0e0; text-align: left; position: relative; z-index: 9999;">
+                            <div class="overlay-header" style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                                <h3 class="overlay-title" style="font-size: 18px; font-weight: 800; color: #333; margin: 0;">${news.company_name}</h3>
+                                <button class="overlay-close" onclick="closeOverlay()" style="background: none; border: none; font-size: 24px; color: #999; cursor: pointer; padding: 0; line-height: 1;">×</button>
+                            </div>
+                            <div class="overlay-body">
+                                <div style="font-size: 20px; font-weight: bold; color: #007bff; margin-bottom: 10px;">${news.phone_mobile || news.phone_office || '연락처 없음'}</div>
+                                <div style="font-size: 14px; color: #555; margin-bottom: 5px;"><strong>대표:</strong> ${news.ceo_name}</div>
+                                <div style="font-size: 13px; color: #666; margin-bottom: 10px; line-height: 1.4;">${news.address}<br><span style="color:#888;">${news.address_detail || ''}</span></div>
+                                <div style="margin-bottom: 15px; font-size: 16px;">
+                                    ${snsLinks}
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <a href="tel:${news.phone_mobile || news.phone_office}" style="flex: 1; background: #f8f9fa; color: #333; text-align: center; padding: 10px 0; border-radius: 8px; text-decoration: none; font-weight: 600; border: 1px solid #ddd;">연락처 보기</a>
+                                    ${news.inquiry_url ? `<a href="${news.inquiry_url}" target="_blank" style="flex: 1; background: #007bff; color: white; text-align: center; padding: 10px 0; border-radius: 8px; text-decoration: none; font-weight: 600;">문의하기</a>` : ''}
+                                </div>
                             </div>
                         </div>
-                        <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #ffffff; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.05));"></div>
-                    </div>
-                `;
+                    `;
+                } else {
+                    // 기존 뉴스용 오버레이
+                    const date = new Date(news.pub_date).toLocaleDateString();
+
+                    // 제목 글자수 제한 (25자)
+                    let displayTitle = news.title;
+                    if (displayTitle.length > 25) {
+                        displayTitle = displayTitle.substring(0, 25) + '...';
+                    }
+
+                    content = `
+                        <div class="overlay-wrap" style="width: 300px; background: #ffffff; border-radius: 20px; padding: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); border: 1px solid rgba(0,0,0,0.05); text-align: left; font-family: 'Pretendard', sans-serif; position: relative; z-index: 9999 !important;">
+                            <div class="overlay-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                <h3 class="overlay-title" style="font-size: 17px; font-weight: 700; color: #222; margin: 0; line-height: 1.35; width: 240px; word-break: keep-all; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${displayTitle}</h3>
+                                <button class="overlay-close" onclick="closeOverlay()" style="background: none; border: none; font-size: 22px; color: #ccc; cursor: pointer; padding: 0; margin-left: 10px; line-height: 1;">×</button>
+                            </div>
+                            <div class="overlay-body">
+                                <div class="overlay-desc" style="font-size: 13px; color: #666; margin-bottom: 12px; display: block;">${(news.description || '').length > 29 ? (news.description || '').substring(0, 29) + '...' : (news.description || '')}</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div class="overlay-meta" style="font-size: 12px; color: #888; font-weight: 400; margin: 0;">${date} | ${news.author || '공실뉴스'}</div>
+                                    <a href="${news.link}" target="_blank" class="overlay-link" style="display: block; text-align: right; font-size: 12px; color: #3b82f6; text-decoration: none; font-weight: 600; margin: 0;">기사 보러가기 →</a>
+                                </div>
+                            </div>
+                            <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #ffffff; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.05));"></div>
+                        </div>
+                    `;
+                }
 
                 const overlay = new kakao.maps.CustomOverlay({
                     content: content,
                     map: map,
                     position: marker.getPosition(),
-                    zIndex: 9999 // 오버레이를 지도의 최상층 레이어로 배정
+                    zIndex: 9999
                 });
 
                 currentOverlay = overlay;
